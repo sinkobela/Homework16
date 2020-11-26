@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class Shop<T extends ShopItem> {
     private final List<T> elements;
 
     public Shop(List<T> elements) {
-        this.elements = new ArrayList<>();
+        this.elements = new ArrayList<>(elements);
     }
 
     public void addItem(T item) {
@@ -38,20 +37,27 @@ public class Shop<T extends ShopItem> {
     }
 
     public Optional<T> findByName(String name) {
-        T nothing = null;
-        Optional<T> result = Optional.ofNullable(nothing);
+        Optional<T> result = Optional.empty();
 
         for (T element : elements) {
             if (element.name().equalsIgnoreCase(name)) {
-                System.out.println(result.orElse(element));
+                return Optional.of(element);
             }
         }
         return result;
     }
 
-//    public Optional<T> removeItem(String name) {
-//
-//    }
+    public Optional<T> removeItem(String name) {
+        Optional<T> result = Optional.empty();
+
+        for (T element : elements) {
+            if (element.name().equalsIgnoreCase(name)) {
+                elements.remove(element);
+                return Optional.of(element);
+            }
+        }
+        return result;
+    }
 
     public List<T> getElements() {
         return elements;
